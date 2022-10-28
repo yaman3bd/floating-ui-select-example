@@ -1,14 +1,4 @@
-import React, {
-  ChangeEvent,
-  FC,
-  FocusEvent,
-  HTMLProps,
-  ReactNode,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from 'react';
+import React, { ChangeEvent, FC, FocusEvent, HTMLProps, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -32,9 +22,8 @@ import styles from '@/components/forms/_form-control.module.scss';
 import { KeyValuePair } from '@/components/types';
 
 interface SelectProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
-  children: ReactNode;
   options: OptionsType,
-  components: SelectComponentsConfig;
+  components?: SelectComponentsConfig;
   onChange: (option: OptionType) => void;
 }
 

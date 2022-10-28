@@ -30,7 +30,9 @@ function App() {
 
   return (
     <div className="App">
-      <Form.Select options={GroupsOptions}/>
+      <Form.Select options={GroupsOptions} onChange={(option)=>{
+        console.log(option);
+      }}/>
     </div>
   );
 }

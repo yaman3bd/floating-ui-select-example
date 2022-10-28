@@ -35,7 +35,7 @@ export type SelectComponentsConfig = Partial<SelectComponents>;
 export type SelectComponentsGeneric = typeof components;
 
 export interface componentsProps {
-  components: SelectComponentsConfig;
+  components?: SelectComponentsConfig;
 }
 
 export interface TagOptionProps extends Omit<HTMLProps<HTMLDivElement>, 'size'> {

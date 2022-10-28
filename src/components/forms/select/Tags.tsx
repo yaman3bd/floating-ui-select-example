@@ -1,5 +1,11 @@
-import React, { FocusEvent, forwardRef, HTMLProps, useLayoutEffect, useRef, useState } from 'react';
-import { InputElement } from '@/components/forms/types';
+import React, {
+  FocusEvent,
+  forwardRef,
+  HTMLProps,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   autoUpdate,
   flip,
@@ -9,121 +15,118 @@ import {
   useFloating,
   useInteractions,
   useListNavigation,
-  useRole
-} from '@floating-ui/react-dom-interactions';
-import { defaultComponents } from '@/components/forms/select/components';
-import { SelectComponentsConfig } from '@/components/forms/select/types';
+  useRole,
+} from "@floating-ui/react-dom-interactions";
+import { defaultComponents } from "@/components/forms/select/components";
+import { SelectComponentsConfig } from "@/components/forms/select/types";
 
 interface SelectProps extends HTMLProps<HTMLDivElement> {
   children: React.ReactNode;
-  options: any[],
+  options: any[];
 }
 
-
 const data = [
-  'نص العنصر',
-  'نص الasdعنصر',
-  'نص العaنصر',
-  'نص العنasdصر',
-  'نص العasdنصر',
-  'نص العنصasdر',
+  "نص العنصر",
+  "نص الasdعنصر",
+  "نص العaنصر",
+  "نص العنasdصر",
+  "نص العasdنصر",
+  "نص العنصasdر",
 ];
-
 
 interface SelectProps extends HTMLProps<HTMLDivElement> {
   children: React.ReactNode;
-  options: any[],
+  options: any[];
   components: SelectComponentsConfig;
 }
 
-const Tags = forwardRef<HTMLDivElement, SelectProps>(({children, options, ...rest}, ref) => {
-  const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const listRef = useRef<Array<HTMLElement | null>>([]);
+const Tags = forwardRef<HTMLDivElement, SelectProps>(
+  ({ children, options, ...rest }, ref) => {
+    const [open, setOpen] = useState(false);
+    const [inputValue, setInputValue] = useState("");
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+    const listRef = useRef<Array<HTMLElement | null>>([]);
 
-  const {x, y, reference, floating, strategy, context} = useFloating<HTMLInputElement>({
-    whileElementsMounted: autoUpdate,
-    open,
-    onOpenChange: setOpen,
-    middleware: [
-      offset(8),
-      flip({padding: 8}),
-      size({
-        apply({rects, availableHeight, elements}) {
-          Object.assign(elements.floating.style, {
-            width: `${rects.reference.width}px`,
-            maxHeight: `${availableHeight}px`
-          });
-        },
-        padding: 8
-      })
-    ]
-  });
+    const { x, y, reference, floating, strategy, context } =
+      useFloating<HTMLInputElement>({
+        whileElementsMounted: autoUpdate,
+        open,
+        onOpenChange: setOpen,
+        middleware: [
+          offset(8),
+          flip({ padding: 8 }),
+          size({
+            apply({ rects, availableHeight, elements }) {
+              Object.assign(elements.floating.style, {
+                width: `${rects.reference.width}px`,
+                maxHeight: `${availableHeight}px`,
+              });
+            },
+            padding: 8,
+          }),
+        ],
+      });
 
-  useLayoutEffect(() => {
-    requestAnimationFrame(() => {
-      if (activeIndex != null) {
-        listRef.current[activeIndex]?.scrollIntoView({block: 'nearest'});
+    useLayoutEffect(() => {
+      requestAnimationFrame(() => {
+        if (activeIndex != null) {
+          listRef.current[activeIndex]?.scrollIntoView({ block: "nearest" });
+        }
+      });
+    }, [activeIndex]);
+    const { getReferenceProps, getFloatingProps, getItemProps } =
+      useInteractions([
+        useRole(context, { role: "listbox" }),
+        useDismiss(context),
+        useListNavigation(context, {
+          listRef,
+          activeIndex,
+          onNavigate: setActiveIndex,
+          virtual: true,
+          loop: true,
+        }),
+      ]);
+    let items = data;
+
+    function onChange(event: React.ChangeEvent<HTMLInputElement>) {
+      const value = event.target.value;
+      setInputValue(value);
+
+      if (value) {
+        setOpen(true);
+        setActiveIndex(0);
+      } else {
+        setOpen(false);
       }
-    });
-  }, [activeIndex]);
-  const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions(
-    [
-      useRole(context, {role: 'listbox'}),
-      useDismiss(context),
-      useListNavigation(context, {
-        listRef,
-        activeIndex,
-        onNavigate: setActiveIndex,
-        virtual: true,
-        loop: true
-      })
-    ]
-  );
-  let items = data;
+    }
 
-  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value;
-    setInputValue(value);
-
-    if (value) {
+    function onFocus(event: React.FocusEvent<HTMLInputElement>) {
+      onFocusHandler(event);
       setOpen(true);
-      setActiveIndex(0);
-    } else {
-      setOpen(false);
-    }
-  }
-
-  function onFocus(event: React.FocusEvent<HTMLInputElement>) {
-    onFocusHandler(event);
-    setOpen(true);
-  }
-
-
-  const [tags, setTags] = useState<any[]>([]);
-  const controlRef = useRef<HTMLDivElement>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const onFocusHandler = (event: FocusEvent<InputElement>) => {
-    event.preventDefault();
-    setIsFocused(true);
-
-  };
-  const onBlurHandler = (event: FocusEvent<InputElement>) => {
-    event.preventDefault();
-
-    if (controlRef.current?.contains(event.relatedTarget)) {
-      return;
     }
 
-    setIsFocused(false);
-  };
-  const getComponents = () => {
-    return defaultComponents(rest);
-  };
-  const {Option, OptionsGroup, Tag} = getComponents();
-  return (
-    /* <>
+    const [tags, setTags] = useState<any[]>([]);
+    const controlRef = useRef<HTMLDivElement>(null);
+    const [isFocused, setIsFocused] = useState(false);
+    const onFocusHandler = (event: FocusEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      setIsFocused(true);
+    };
+    const onBlurHandler = (event: FocusEvent<HTMLInputElement>) => {
+      event.preventDefault();
+
+      if (controlRef.current?.contains(event.relatedTarget)) {
+        return;
+      }
+
+      setIsFocused(false);
+    };
+    const getComponents = () => {
+      return defaultComponents(rest);
+    };
+    const { Option, OptionsGroup, Tag } = getComponents();
+    return (
+      /* <>
        <div
          {...getReferenceProps({
            ref: reference,
@@ -231,8 +234,9 @@ const Tags = forwardRef<HTMLDivElement, SelectProps>(({children, options, ...res
          </OptionsGroup>
        )}
      </>*/
-    <div></div>
-  );
-});
+      <div></div>
+    );
+  }
+);
 
 export default Tags;
