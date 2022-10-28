@@ -1,0 +1,76 @@
+$class-prefix: 'ms-';
+.ms-form-select-option-selected {
+  & .ms-form-select-option-icon {
+    @apply text-success;
+  }
+}
+
+.#{$class-prefix}form-select {
+  input {
+    padding-inline-end: 48px;
+  }
+
+  .input-append {
+    position: absolute;
+    @apply rtl:left-0 ltr:right-0;
+  }
+
+  &-tag {
+    @apply cursor-pointer w-fit py-1 px-2 flex flex-row items-center rounded;
+    background: theme('colors.black / 2%');
+    margin-inline-end: theme('margin[2]');
+
+    &:hover {
+      background: theme('colors.black / 6%');
+    }
+
+    &-icon {
+      margin-inline-start: theme('margin[2.5]');
+    }
+  }
+
+  &-tags {
+    @apply flex flex-row flex-wrap items-center flex-grow flex-shrink;
+    &-search-wrapper {
+      @apply inline-block relative flex-grow flex-shrink h-full;
+    }
+
+    &-search-copy {
+      @apply invisible whitespace-pre inline-block h-px w-full;
+    }
+
+    &-search {
+      @apply absolute inset-0 border-0 outline-0 p-0 box-border w-full appearance-none;
+    }
+  }
+
+  &-option {
+    @apply w-full py-1 px-2 rounded flex flex-row items-center cursor-default;
+    &-active {
+      @apply bg-primary-50;
+    }
+
+    &:hover {
+      @apply bg-primary-50;
+    }
+
+    &-icon {
+      @apply text-gray-600;
+      margin-inline-end: theme('margin.2')
+    }
+
+    &-selected {
+      @apply bg-primary-100;
+    }
+  }
+
+  &-options-container {
+    @apply bg-white p-2 rounded-md;
+    z-index: 999999;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &-options-group {
+    @apply flex flex-col justify-center items-center;
+  }
+}

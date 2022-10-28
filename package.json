@@ -1,0 +1,62 @@
+{
+  "name": "@msaaq/abjad",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/abjad.umd.js",
+  "module": "./dist/abjad.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/abjad.es.js",
+      "require": "./dist/abjad.umd.js"
+    },
+    "./dist/style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "watch": "tsc && vite build --watch --mode dev",
+    "preview": "vite preview",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "resolutions": {
+    "jest-mock": "^28.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
+  },
+  "dependencies": {
+    "@floating-ui/react-dom-interactions": "^0.10.1",
+    "@heroicons/react": "^2.0.11",
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@types/node": "^18.8.0",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^2.1.0",
+    "autoprefixer": "^10.4.13",
+    "babel-loader": "^8.2.5",
+    "i18next": "^21.10.0",
+    "i18next-browser-languagedetector": "^6.1.6",
+    "i18next-http-backend": "^1.4.4",
+    "postcss": "^8.4.18",
+    "react-i18next": "^11.18.6",
+    "react-merge-refs": "^2.0.1",
+    "sass": "^1.55.0",
+    "tailwindcss": "^3.2.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0",
+    "vite-plugin-dts": "^1.6.4",
+    "vite-tsconfig-paths": "^3.5.1"
+  }
+}
