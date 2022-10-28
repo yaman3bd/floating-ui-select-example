@@ -24,7 +24,8 @@ import { KeyValuePair } from '@/components/types';
 interface SelectProps extends Omit<HTMLProps<HTMLDivElement>, 'onChange'> {
   options: OptionsType,
   components?: SelectComponentsConfig;
-  onChange: (option: OptionType) => void;
+  onChange: (option: OptionType | Array<OptionType>) => void;
+  multiple?: boolean;
 }
 
 const Select: FC<SelectProps> = (
@@ -32,6 +33,7 @@ const Select: FC<SelectProps> = (
     children,
     options: providedOptions,
     onChange,
+    multiple = false,
     ...props
   }) => {
 
@@ -44,6 +46,9 @@ const Select: FC<SelectProps> = (
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
+
+  const [selectedOptions, setSelectedOptions] = useState<Array<OptionType>>([]);
+
 
   const {x, y, reference, floating, strategy, context} = useFloating({
     open,
@@ -169,9 +174,12 @@ const Select: FC<SelectProps> = (
     <>
       <SelectContext.Provider
         value={{
+          multiple,
           selectedIndex,
           setSelectedIndex,
           setSelectedOption,
+          selectedOptions,
+          setSelectedOptions,
           setInputValue,
           activeIndex,
           setActiveIndex,

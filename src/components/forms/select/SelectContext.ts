@@ -9,9 +9,12 @@ interface SelectContextValue {
   setActiveIndex: (index: number | null) => void;
   setInputValue: (value: string) => void;
   setSelectedOption: (option: OptionType | null) => void;
+  selectedOptions: Array<OptionType>;
+  setSelectedOptions: (option: Array<OptionType>) => void;
   listRef: MutableRefObject<Array<HTMLElement | null>>;
   setOpen: (open: boolean) => void;
-  onChange: (option: OptionType) => void;
+  multiple: boolean;
+  onChange: (option: OptionType | Array<OptionType>) => void;
   getItemProps: (userProps?: HTMLProps<HTMLElement>) => any;
 }
 

@@ -29,6 +29,9 @@ const Option: FC<OptionProps> = (
     activeIndex,
     setActiveIndex,
     setSelectedOption,
+    setSelectedOptions,
+    multiple,
+    selectedOptions,
     getItemProps,
   } = useContext(SelectContext);
 
@@ -36,7 +39,9 @@ const Option: FC<OptionProps> = (
     setSelectedIndex(index ?? 0);
     setInputValue(option.label);
     setSelectedOption(option);
-    onChange && onChange(option);
+    const options = multiple ? [...selectedOptions, option] : option;
+    setSelectedOptions([...selectedOptions, option]);
+    onChange && onChange(options);
     setOpen(false);
     setActiveIndex(null);
   }
@@ -58,6 +63,7 @@ const Option: FC<OptionProps> = (
     }
   }
 
+  const isSelected = multiple ? selectedOptions.includes(option) : selectedIndex === index;
   return (
     <div
       role="option"
@@ -65,7 +71,7 @@ const Option: FC<OptionProps> = (
       className={classNames(
         'text-black',
         styles[toClassName('form-select-option')],
-        selectedIndex === index ? styles[toClassName('form-select-option-selected')] : '',
+        isSelected ? styles[toClassName('form-select-option-selected')] : '',
         activeIndex === index ? styles[toClassName('form-select-option-active')] : '',
       )}
       {...getItemProps({
@@ -78,7 +84,7 @@ const Option: FC<OptionProps> = (
       })}
       {...props}
     >
-      {selectedIndex === index &&
+      {isSelected &&
           <CheckIcon
               className={classNames(styles[toClassName('form-select-option-icon')], 'w-5 h-5')}
           />}
